@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pokedex_app/consts/consts_app.dart';
+import 'package:pokedex_app/models/pokeapi.dart';
 import 'package:pokedex_app/pages/home_page/widgets/appbar_home.dart';
+import 'package:pokedex_app/stores/pokeapi_store.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  PokeApiStore pokeApiStore;
+
+  @override
+  void initState() {
+    super.initState();
+    pokeApiStore = PokeApiStore();
+    pokeApiStore.fetchPokemonList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;    
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -26,17 +43,24 @@ class HomePage extends StatelessWidget {
           SafeArea(
             child: Container(
               child: Column(
-                children: <Widget>[                 
+                children: <Widget>[
                   AppBarHome(),
                   Expanded(
                     child: Container(
-                      child: ListView(
-                        children: <Widget>[
-                          ListTile(
-                            title: Text("POKEMON"),
-                          ),
-                        ],
-                      ),
+                      child: Observer(builder: (_) {
+                        PokeAPI _pokeApi = pokeApiStore.pokeAPI;
+                        return (_pokeApi == null)
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : ListView.builder(
+                                itemCount: _pokeApi.pokemon.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(_pokeApi.pokemon[index].name),
+                                  );
+                                });
+                      }),
                     ),
                   ),
                 ],

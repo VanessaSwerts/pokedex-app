@@ -1,22 +1,35 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:pokedex_app/consts/consts_app.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pokedex_app/models/pokeapi.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
-import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
-class PokeDetailPage extends StatelessWidget {
+class PokeDetailPage extends StatefulWidget {
   final int index;
-  Color colorPoke;
+
   PokeDetailPage({this.index});
 
   @override
-  Widget build(BuildContext context) {
-    final _pokeStore = Provider.of<PokeApiStore>(context);
-    Pokemon pokemon = _pokeStore.getPokemon(index);
-    colorPoke = ConstsApp.getColorType(type: pokemon.type[0]);
+  _PokeDetailPageState createState() => _PokeDetailPageState();
+}
+
+class _PokeDetailPageState extends State<PokeDetailPage> {  
+  PageController _pageController;
+  Pokemon pokemon;
+  PokeApiStore  _pokeStore;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: widget.index);
+    _pokeStore = GetIt.instance<PokeApiStore>();
+    pokemon = _pokeStore.getPokemon(widget.index);
+  }
+
+  @override
+  Widget build(BuildContext context) {      
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
@@ -83,11 +96,12 @@ class PokeDetailPage extends StatelessWidget {
             child: SizedBox(
               height: 150,
               child: PageView.builder(
+                controller: _pageController,
                 onPageChanged: (index) {
-                  _pokeStore.setCurrentPokemon(index);                  
+                  _pokeStore.setCurrentPokemon(index);
                 },
                 itemCount: _pokeStore.pokeAPI.pokemon.length,
-                itemBuilder: (BuildContext context, int count) {                                   
+                itemBuilder: (BuildContext context, int count) {
                   Pokemon _pokeItem = _pokeStore.getPokemon(count);
                   return CachedNetworkImage(
                     height: 60,

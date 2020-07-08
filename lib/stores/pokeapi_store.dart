@@ -33,19 +33,13 @@ abstract class _PokeApiStoreBase with Store {
     loadPokeAPI().then((pokeList) {
       _pokeAPI = pokeList;
     });
-  }
-
-  @action
-  getPokemon(int index) {
-    return _pokeAPI.pokemon[index];
-  }  
+  } 
 
   @action
   setCurrentPokemon(int index) {
     _pokeCurrent = _pokeAPI.pokemon[index];
     pokeColor = ConstsApp.getColorType(type: _pokeCurrent.type[0]);    
-  }
-  
+  }  
 
   @action
   Widget getPokemonImage(String index) {
@@ -56,6 +50,10 @@ abstract class _PokeApiStoreBase with Store {
         imageUrl:
             "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$index.png");
   }
+
+  Pokemon getPokemon(int index) {
+    return _pokeAPI.pokemon[index];
+  }  
 
   Future<PokeAPI> loadPokeAPI() async {
     try {

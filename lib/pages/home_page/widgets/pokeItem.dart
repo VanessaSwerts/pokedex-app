@@ -1,14 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex_app/consts/consts_app.dart';
 
 class PokeItem extends StatelessWidget {
   final String name;
+  final String number;
   final int index;
   final Color color;
-  final Widget image;
   final List<String> types;
 
-  PokeItem({this.name, this.index, this.color, this.image, this.types});
+  PokeItem({this.name, this.index, this.color, this.number, this.types});
 
   Widget setTypes() {
     List<Widget> lista = [];
@@ -95,7 +96,15 @@ class PokeItem extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: image,
+                child: CachedNetworkImage(
+                  height: 90,
+                  width: 90,
+                  placeholder: (context, url) => Container(
+                    color: Colors.transparent,
+                  ),
+                  imageUrl:
+                      "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$number.png",
+                ),
               ),
             ],
           ),

@@ -16,6 +16,13 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
       (_$pokeAPIComputed ??= Computed<PokeAPI>(() => super.pokeAPI,
               name: '_PokeApiStoreBase.pokeAPI'))
           .value;
+  Computed<Pokemon> _$pokeCurrentComputed;
+
+  @override
+  Pokemon get pokeCurrent =>
+      (_$pokeCurrentComputed ??= Computed<Pokemon>(() => super.pokeCurrent,
+              name: '_PokeApiStoreBase.pokeCurrent'))
+          .value;
 
   final _$_pokeAPIAtom = Atom(name: '_PokeApiStoreBase._pokeAPI');
 
@@ -29,6 +36,36 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
   set _pokeAPI(PokeAPI value) {
     _$_pokeAPIAtom.reportWrite(value, super._pokeAPI, () {
       super._pokeAPI = value;
+    });
+  }
+
+  final _$_pokeCurrentAtom = Atom(name: '_PokeApiStoreBase._pokeCurrent');
+
+  @override
+  Pokemon get _pokeCurrent {
+    _$_pokeCurrentAtom.reportRead();
+    return super._pokeCurrent;
+  }
+
+  @override
+  set _pokeCurrent(Pokemon value) {
+    _$_pokeCurrentAtom.reportWrite(value, super._pokeCurrent, () {
+      super._pokeCurrent = value;
+    });
+  }
+
+  final _$pokeColorAtom = Atom(name: '_PokeApiStoreBase.pokeColor');
+
+  @override
+  dynamic get pokeColor {
+    _$pokeColorAtom.reportRead();
+    return super.pokeColor;
+  }
+
+  @override
+  set pokeColor(dynamic value) {
+    _$pokeColorAtom.reportWrite(value, super.pokeColor, () {
+      super.pokeColor = value;
     });
   }
 
@@ -58,6 +95,17 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
   }
 
   @override
+  dynamic setCurrentPokemon(int index) {
+    final _$actionInfo = _$_PokeApiStoreBaseActionController.startAction(
+        name: '_PokeApiStoreBase.setCurrentPokemon');
+    try {
+      return super.setCurrentPokemon(index);
+    } finally {
+      _$_PokeApiStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   Widget getPokemonImage(String index) {
     final _$actionInfo = _$_PokeApiStoreBaseActionController.startAction(
         name: '_PokeApiStoreBase.getPokemonImage');
@@ -71,7 +119,9 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
   @override
   String toString() {
     return '''
-pokeAPI: ${pokeAPI}
+pokeColor: ${pokeColor},
+pokeAPI: ${pokeAPI},
+pokeCurrent: ${pokeCurrent}
     ''';
   }
 }

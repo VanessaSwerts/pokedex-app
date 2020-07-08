@@ -5,25 +5,17 @@ import 'package:pokedex_app/consts/consts_app.dart';
 import 'package:pokedex_app/models/pokeapi.dart';
 import 'package:pokedex_app/pages/home_page/widgets/appbar_home.dart';
 import 'package:pokedex_app/pages/home_page/widgets/pokeItem.dart';
+import 'package:pokedex_app/pages/poke_detail/poke_detail_page.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  PokeApiStore pokeStore;
-
-  @override
-  void initState() {
-    super.initState();
-    pokeStore = PokeApiStore();
-    pokeStore.fetchPokemonList();
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final pokeStore = Provider.of<PokeApiStore>(context);
+    if (pokeStore.pokeAPI == null) {
+      pokeStore.fetchPokemonList();
+    }
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -77,11 +69,23 @@ class _HomePageState extends State<HomePage> {
                                           child: PokeItem(
                                             index: index,
                                             name: pokemon.name,
-                                            image: pokeStore
-                                                .getPokemonImage(pokemon.num),
+                                            number: pokemon.num,
                                             types: pokemon.type,
                                           ),
-                                          onTap: null,
+                                          onTap: () {
+                                            pokeStore.setCurrentPokemon(index);
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        PokeDetailPage(
+                                                  index: index,
+                                                ),
+                                                fullscreenDialog: true,
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     );

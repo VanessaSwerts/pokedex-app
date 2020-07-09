@@ -62,6 +62,20 @@ class PokeItem extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: Stack(
             children: <Widget>[
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Hero(
+                  tag: name + 'rotation',
+                  child: Opacity(
+                    opacity: 0.25,
+                    child: Image.asset(
+                      ConstsApp.whitePokeball,
+                      height: 90,
+                      width: 90,
+                    ),
+                  ),
+                ),
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -85,25 +99,18 @@ class PokeItem extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: Opacity(
-                  opacity: 0.25,
-                  child: Image.asset(
-                    ConstsApp.whitePokeball,
+                child: Hero(
+                  tag: name,
+                  child: CachedNetworkImage(
+                    alignment: Alignment.bottomRight,
                     height: 90,
                     width: 90,
+                    placeholder: (context, url) => Container(
+                      color: Colors.transparent,
+                    ),
+                    imageUrl:
+                        "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$number.png",
                   ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: CachedNetworkImage(
-                  height: 90,
-                  width: 90,
-                  placeholder: (context, url) => Container(
-                    color: Colors.transparent,
-                  ),
-                  imageUrl:
-                      "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$number.png",
                 ),
               ),
             ],

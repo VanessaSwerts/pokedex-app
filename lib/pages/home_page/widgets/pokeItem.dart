@@ -53,7 +53,13 @@ class PokeItem extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: ConstsApp.getColorType(type: types[0]),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                ConstsApp.getColorType(type: types[0]).withOpacity(0.7),
+                ConstsApp.getColorType(type: types[0]),
+              ]),
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
@@ -70,8 +76,8 @@ class PokeItem extends StatelessWidget {
                     opacity: 0.25,
                     child: Image.asset(
                       ConstsApp.whitePokeball,
-                      height: 90,
-                      width: 90,
+                      height: 80,
+                      width: 80,
                     ),
                   ),
                 ),
@@ -103,8 +109,8 @@ class PokeItem extends StatelessWidget {
                   tag: name,
                   child: CachedNetworkImage(
                     alignment: Alignment.bottomRight,
-                    height: 90,
-                    width: 90,
+                    height: 80,
+                    width: 80,
                     placeholder: (context, url) => Container(
                       color: Colors.transparent,
                     ),

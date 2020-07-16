@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pokedex_app/consts/consts_app.dart';
 import 'package:pokedex_app/models/pokeapi.dart';
+import 'package:pokedex_app/pages/about_page/about_page.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
 import 'package:simple_animations/simple_animations/controlled_animation.dart';
 import 'package:simple_animations/simple_animations/multi_track_tween.dart';
@@ -176,6 +177,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
             builder: (context, state) {
               return Container(
                 height: MediaQuery.of(context).size.height,
+                child: AboutPage(),
               );
             },
           ),

@@ -31,7 +31,8 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: widget.index);
+    _pageController =
+        PageController(initialPage: widget.index, viewportFraction: 0.5);
     _pokeStore = GetIt.instance<PokeApiStore>();
     pokemon = _pokeStore.getPokemon(widget.index);
     _animation = MultiTrackTween([
@@ -56,76 +57,105 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: Observer(
-          builder: (BuildContext context) {
-            return AppBar(
-              backgroundColor: _pokeStore.pokeColor,
-              elevation: 0,
-              title: Opacity(
-                opacity: _opacityTitleAppBar,
-                child: Text(
-                  _pokeStore.pokeCurrent.name,
-                  style: TextStyle(
-                    fontFamily: "Google",
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              actions: <Widget>[
-                Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    ControlledAnimation(
-                        playback: Playback.LOOP,
-                        duration: _animation.duration,
-                        tween: _animation,
-                        builder: (context, animation) {
-                          return Transform.rotate(
-                            angle: animation['rotation'],
-                            child: Opacity(
-                              opacity: _opacityTitleAppBar >= 0.2 ? 0.2 : 0.0,
-                              child: Image.asset(
-                                ConstsApp.whitePokeball,
-                                height: 50,
-                                width: 50,
-                              ),
-                            ),
-                          );
-                        }),
-                    IconButton(
-                      icon: Icon(
-                        Icons.favorite_border,
-                        color: Colors.white,
-                      ),
-                      onPressed: null,
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
-      ),
       body: Stack(
         children: <Widget>[
           Observer(
             builder: (context) {
-              return Container(color: _pokeStore.pokeColor);
+              return AnimatedContainer(
+                color: _pokeStore.pokeColor,
+                duration: Duration(milliseconds: 300),
+                child: Stack(
+                  children: <Widget>[
+                    AppBar(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      leading: IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      actions: <Widget>[
+                        Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            ControlledAnimation(
+                                playback: Playback.LOOP,
+                                duration: _animation.duration,
+                                tween: _animation,
+                                builder: (context, animation) {
+                                  return Transform.rotate(
+                                    angle: animation['rotation'],
+                                    child: Opacity(
+                                      opacity: _opacityTitleAppBar >= 0.2
+                                          ? 0.2
+                                          : 0.0,
+                                      child: Image.asset(
+                                        ConstsApp.whitePokeball,
+                                        height: 50,
+                                        width: 50,
+                                      ),
+                                    ),
+                                  );
+                                }),
+                            IconButton(
+                              icon: Icon(
+                                Icons.favorite_border,
+                                color: Colors.white,
+                              ),
+                              onPressed: null,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: MediaQuery.of(context).size.height * 0.11 -
+                          _progress *
+                              (MediaQuery.of(context).size.height * 0.060),
+                      left: 20 +
+                          _progress *
+                              (MediaQuery.of(context).size.height * 0.060),
+                      child: Text(
+                        _pokeStore.pokeCurrent.name,
+                        style: TextStyle(
+                            fontFamily: 'Google',
+                            fontSize: 38 -
+                                _progress *
+                                    (MediaQuery.of(context).size.height *
+                                        0.011),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    Positioned(
+                      top: MediaQuery.of(context).size.height * 0.16,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20.0, right: 20.0, top: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              setTypes(_pokeStore.pokeCurrent.type),
+                              Text(
+                                "#" + _pokeStore.pokeCurrent.num.toString(),
+                                style: TextStyle(
+                                    fontFamily: 'Google',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height / 0.3,
           ),
           SlidingSheet(
             listener: (state) {
@@ -155,7 +185,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
               padding: EdgeInsets.only(
                   top: _opacityTitleAppBar == 1
                       ? 1000
-                      : (MediaQuery.of(context).size.height * 0.11) -
+                      : (MediaQuery.of(context).size.height * 0.2) -
                           _progress * 50),
               child: SizedBox(
                 height: 200,
@@ -177,43 +207,50 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                             builder: (context, animation) {
                               return Transform.rotate(
                                 angle: animation['rotation'],
-                                child: Hero(
-                                  tag: " ", //_pokeItem.name + 'rotation',
-                                  child: Opacity(
-                                    opacity: 0.25,
-                                    child: Image.asset(
-                                      ConstsApp.whitePokeball,
-                                      height: 270,
-                                      width: 270,
-                                    ),
+                                child: Opacity(
+                                  opacity: index == _pokeStore.currentPosition
+                                      ? 0.2
+                                      : 0,
+                                  child: Image.asset(
+                                    ConstsApp.whitePokeball,
+                                    height: 270,
+                                    width: 270,
                                   ),
                                 ),
                               );
                             }),
-                        Observer(builder: (_) {
-                          return AnimatedPadding(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.bounceInOut,
-                            padding: EdgeInsets.all(
-                              index == _pokeStore.currentPosition ? 0.0 : 60.0,
-                            ),
-                            child: Hero(
-                              tag: _pokeItem.name,
-                              child: CachedNetworkImage(
-                                height: 160,
-                                width: 160,
-                                placeholder: (context, url) => Container(
-                                  color: Colors.transparent,
-                                ),
-                                color: index == _pokeStore.currentPosition
-                                    ? null
-                                    : Colors.black.withOpacity(0.5),
-                                imageUrl:
-                                    "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png",
+                        IgnorePointer(
+                          child: Observer(
+                              //name: "Pokemon",
+                              builder: (_) {
+                            return AnimatedPadding(
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.bounceInOut,
+                              padding: EdgeInsets.all(
+                                index == _pokeStore.currentPosition
+                                    ? 0.0
+                                    : 60.0,
                               ),
-                            ),
-                          );
-                        }),
+                              child: Hero(
+                                tag: index == _pokeStore.currentPosition
+                                    ? _pokeItem.name
+                                    : 'none' + index.toString(),
+                                child: CachedNetworkImage(
+                                  height: 160,
+                                  width: 160,
+                                  placeholder: (context, url) => Container(
+                                    color: Colors.transparent,
+                                  ),
+                                  color: index == _pokeStore.currentPosition
+                                      ? null
+                                      : Colors.black.withOpacity(0.5),
+                                  imageUrl:
+                                      "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png",
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ],
                     );
                   },
@@ -223,6 +260,42 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget setTypes(List<String> types) {
+    List<Widget> lista = [];
+    types.forEach((name) {
+      lista.add(
+        Row(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color.fromARGB(80, 255, 255, 255)),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Text(
+                  name.trim(),
+                  style: TextStyle(
+                      fontFamily: 'Google',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 8,
+            )
+          ],
+        ),
+      );
+    });
+    return Row(
+      children: lista,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 }

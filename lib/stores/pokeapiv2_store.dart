@@ -25,7 +25,7 @@ abstract class _PokeApiV2StoreBase with Store {
       pokeApiV2 = PokeApiV2.fromJson(decodeJson);
     } catch (error, stacktrace) {
       print("Erro ao carregar lista!" + stacktrace.toString());
-      pokeApiV2 = null; 
+      return null;
     }
   }
 
@@ -37,7 +37,7 @@ abstract class _PokeApiV2StoreBase with Store {
       specie = Specie.fromJson(decodeJson);
     } catch (error, stacktrace) {
       print("Erro ao carregar lista!" + stacktrace.toString());
-      specie = null; 
+      return null;
     }
   }
 }

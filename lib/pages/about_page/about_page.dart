@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
-import 'package:pokedex_app/models/specie.dart';
+import 'package:pokedex_app/pages/about_page/widgets/aba_evolution.dart';
+import 'package:pokedex_app/pages/about_page/widgets/aba_sobre.dart';
+import 'package:pokedex_app/pages/about_page/widgets/aba_status.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
-import 'package:pokedex_app/stores/pokeapiv2_store.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -16,7 +17,6 @@ class _AboutPageState extends State<AboutPage>
   TabController _tabController;
   PageController _pageController;
   PokeApiStore _pokeStore;
-  PokeApiV2Store _pokeV2Store;
 
   @override
   void initState() {
@@ -24,7 +24,6 @@ class _AboutPageState extends State<AboutPage>
     _tabController = TabController(length: 3, vsync: this);
     _pageController = PageController(initialPage: 0);
     _pokeStore = GetIt.instance<PokeApiStore>();
-    _pokeV2Store = GetIt.instance<PokeApiV2Store>();
   }
 
   @override
@@ -38,8 +37,6 @@ class _AboutPageState extends State<AboutPage>
           preferredSize: Size.fromHeight(30),
           child: Observer(
             builder: (BuildContext context) {
-              _pokeV2Store.getInfoPokemon(_pokeStore.pokeCurrent.name);
-              _pokeV2Store.getInfoSpecie(_pokeStore.pokeCurrent.id.toString());
               return TabBar(
                 onTap: (index) {
                   _pageController.animateToPage(
@@ -88,58 +85,9 @@ class _AboutPageState extends State<AboutPage>
           );
         },
         children: <Widget>[
-          Container(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 30.0,
-                vertical: 10.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Descrição:",
-                    style: TextStyle(
-                      fontFamily: "Google",
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Observer(builder: (_) {
-                    Specie _specie = _pokeV2Store.specie;
-                    return _specie != null
-                        ? Text(
-                          _specie.flavorTextEntries
-                              .where((item) => item.language.name == 'en')
-                              .first
-                              .flavorText,
-                          style: TextStyle(
-                            //fontFamily: "Google",
-                            fontSize: 14,
-                          ),
-                        )
-                        : SizedBox(
-                            width: 15,
-                            height: 15,
-                            child: Center(
-                                child: CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation(_pokeStore.pokeColor),
-                            )));
-                  }),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.green,
-          ),
-          Container(
-            color: Colors.blue,
-          ),
+          AbaSobre(),
+          AbaEvolution(),
+          AbaStatus(),
         ],
       ),
     );

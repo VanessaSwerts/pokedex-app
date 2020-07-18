@@ -230,7 +230,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                             }),
                         IgnorePointer(
                           child: Observer(
-                              //name: "Pokemon",
+                              name: "Pokemon",
                               builder: (_) {
                             return AnimatedPadding(
                               duration: Duration(milliseconds: 400),

@@ -19,7 +19,7 @@ class AbaSobre extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[            
+          children: <Widget>[
             Text(
               "Descrição:",
               style: TextStyle(
@@ -96,32 +96,92 @@ class AbaSobre extends StatelessWidget {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Observer(builder: (_) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Observer(
+                    builder: (_) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Peso: ",
+                            style: TextStyle(
+                              fontFamily: "Google",
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          Text(
+                            _pokeStore.pokeCurrent.weight,
+                            style: TextStyle(
+                              fontFamily: "Google",
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            Observer(
+              builder: (_) {
+                String firstAbility = _pokeV2Store.pokeApiV2.abilities
+                    .where((element) => element.ability != null)
+                    .first
+                    .ability
+                    .name;
+                String lastAbility = _pokeV2Store.pokeApiV2.abilities
+                    .where((element) => element.ability != null)
+                    .last
+                    .ability
+                    .name;
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Habilidade(s):",
+                      style: TextStyle(
+                        fontFamily: "Google",
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Peso: ",
-                          style: TextStyle(
-                            fontFamily: "Google",
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        Text(
-                          _pokeStore.pokeCurrent.weight,
+                          firstAbility == lastAbility
+                              ? firstAbility
+                              : firstAbility + ", ",
                           style: TextStyle(
                             fontFamily: "Google",
                             fontSize: 14,
                             color: Colors.black,
                           ),
+                          maxLines: 2,
+                        ),
+                        Text(
+                          firstAbility == lastAbility ? " " : lastAbility,
+                          style: TextStyle(
+                            fontFamily: "Google",
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                          maxLines: 2,
                         ),
                       ],
-                    );
-                  }),                  
-                ],
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),

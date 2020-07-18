@@ -8,6 +8,8 @@ import 'package:pokedex_app/pages/home_page/widgets/appbar_home.dart';
 import 'package:pokedex_app/pages/home_page/widgets/pokeItem.dart';
 import 'package:pokedex_app/pages/poke_detail/poke_detail_page.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
+import 'package:simple_animations/simple_animations/controlled_animation.dart';
+import 'package:simple_animations/simple_animations/multi_track_tween.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,13 +18,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   PokeApiStore pokeStore;
+  MultiTrackTween _animation;
 
   @override
   void initState() {
     super.initState();
     pokeStore = GetIt.instance<PokeApiStore>();
-    if (pokeStore.pokeAPI == null)
-      pokeStore.fetchPokemonList();
+    if (pokeStore.pokeAPI == null) pokeStore.fetchPokemonList();
+    _animation = MultiTrackTween([
+      Track("rotation").add(Duration(seconds: 5), Tween(begin: 0.0, end: 6.0),
+          curve: Curves.linear)
+    ]);
   }
 
   @override
@@ -36,14 +42,23 @@ class _HomePageState extends State<HomePage> {
           Positioned(
             top: -47,
             left: screenWidth - 140,
-            child: Opacity(
-              opacity: 0.1,
-              child: Image.asset(
-                ConstsApp.blackPokeball,
-                width: 220,
-                height: 220,
-              ),
-            ),
+            child: ControlledAnimation(
+                playback: Playback.LOOP,
+                duration: _animation.duration,
+                tween: _animation,
+                builder: (context, animation) {
+                  return Transform.rotate(
+                    angle: animation['rotation'],
+                    child: Opacity(
+                      opacity: 0.1,
+                      child: Image.asset(
+                        ConstsApp.blackPokeball,
+                        width: 220,
+                        height: 220,
+                      ),
+                    ),
+                  );
+                }),
           ),
           SafeArea(
             child: Container(

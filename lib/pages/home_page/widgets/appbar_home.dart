@@ -4,7 +4,7 @@ class AppBarHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,      
+      height: 120,
       child: Column(
         children: <Widget>[
           Container(
@@ -33,8 +33,8 @@ class AppBarHome extends StatelessWidget {
                   "Pokedex",
                   style: TextStyle(
                     fontFamily: "Google",
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
+                    fontWeight: FontWeight.bold,                    
+                    fontSize: 32,
                   ),
                 ),
               ),

@@ -24,11 +24,14 @@ abstract class _PokeApiStoreBase with Store {
   @observable
   int currentPosition;
 
+  @observable
+  List<String> favPoke = List();
+
   @computed
   PokeAPI get pokeAPI => _pokeAPI;
 
   @computed
-  Pokemon get pokeCurrent => _pokeCurrent;   
+  Pokemon get pokeCurrent => _pokeCurrent;
 
   @action
   fetchPokemonList() {
@@ -36,13 +39,24 @@ abstract class _PokeApiStoreBase with Store {
     loadPokeAPI().then((pokeList) {
       _pokeAPI = pokeList;
     });
-  } 
+  }
 
   @action
   setCurrentPokemon(int index) {
     _pokeCurrent = _pokeAPI.pokemon[index];
-    pokeColor = ConstsApp.getColorType(type: _pokeCurrent.type[0]);  
-    currentPosition = index; 
+    pokeColor = ConstsApp.getColorType(type: _pokeCurrent.type[0]);
+    currentPosition = index;
+  }
+
+  @action
+  setFavPoke() {
+    if (favPoke.isEmpty) {
+      favPoke.add(_pokeCurrent.num);
+    } else if (!favPoke.contains(_pokeCurrent.num)) {
+      favPoke.add(_pokeCurrent.num);
+    } else if (favPoke.contains(_pokeCurrent.num)) {
+      favPoke.remove(_pokeCurrent.num);
+    }
   }  
 
   @action
@@ -57,7 +71,7 @@ abstract class _PokeApiStoreBase with Store {
 
   Pokemon getPokemon(int index) {
     return _pokeAPI.pokemon[index];
-  }  
+  }
 
   Future<PokeAPI> loadPokeAPI() async {
     try {

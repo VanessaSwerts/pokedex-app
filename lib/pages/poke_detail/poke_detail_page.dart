@@ -37,7 +37,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
     _pageController =
         PageController(initialPage: widget.index, viewportFraction: 0.5);
     _pokeStore = GetIt.instance<PokeApiStore>();
-    _pokeV2Store = GetIt.instance<PokeApiV2Store>();   
+    _pokeV2Store = GetIt.instance<PokeApiV2Store>();
     _pokeV2Store.getInfoPokemon(_pokeStore.pokeCurrent.name);
     _pokeV2Store.getInfoSpecie(_pokeStore.pokeCurrent.id.toString());
     _animation = MultiTrackTween([
@@ -103,12 +103,25 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                                     ),
                                   );
                                 }),
-                            IconButton(
-                              icon: Icon(
-                                Icons.favorite_border,
-                                color: Colors.white,
-                              ),
-                              onPressed: null,
+                            Observer(
+                              builder: (BuildContext context) {
+                                return IconButton(
+                                  icon: _pokeStore.favPoke.isEmpty
+                                      ? Icon(Icons.favorite_border,
+                                          color: Colors.white)
+                                      : Icon(
+                                          !_pokeStore.favPoke.contains(
+                                                  _pokeStore.pokeCurrent.num)
+                                              ? Icons.favorite_border
+                                              : Icons.favorite,
+                                          color: !_pokeStore.favPoke.contains(
+                                                  _pokeStore.pokeCurrent.num)
+                                              ? Colors.white
+                                              : Colors.redAccent,
+                                        ),
+                                  onPressed: _pokeStore.setFavPoke,
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -232,33 +245,33 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                           child: Observer(
                               name: "Pokemon",
                               builder: (_) {
-                            return AnimatedPadding(
-                              duration: Duration(milliseconds: 400),
-                              curve: Curves.bounceInOut,
-                              padding: EdgeInsets.all(
-                                index == _pokeStore.currentPosition
-                                    ? 0.0
-                                    : 60.0,
-                              ),
-                              child: Hero(
-                                tag: index == _pokeStore.currentPosition
-                                    ? _pokeItem.name
-                                    : 'none' + index.toString(),
-                                child: CachedNetworkImage(
-                                  height: 160,
-                                  width: 160,
-                                  placeholder: (context, url) => Container(
-                                    color: Colors.transparent,
+                                return AnimatedPadding(
+                                  duration: Duration(milliseconds: 400),
+                                  curve: Curves.bounceInOut,
+                                  padding: EdgeInsets.all(
+                                    index == _pokeStore.currentPosition
+                                        ? 0.0
+                                        : 60.0,
                                   ),
-                                  color: index == _pokeStore.currentPosition
-                                      ? null
-                                      : Colors.black.withOpacity(0.5),
-                                  imageUrl:
-                                      "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png",
-                                ),
-                              ),
-                            );
-                          }),
+                                  child: Hero(
+                                    tag: index == _pokeStore.currentPosition
+                                        ? _pokeItem.name
+                                        : 'none' + index.toString(),
+                                    child: CachedNetworkImage(
+                                      height: 160,
+                                      width: 160,
+                                      placeholder: (context, url) => Container(
+                                        color: Colors.transparent,
+                                      ),
+                                      color: index == _pokeStore.currentPosition
+                                          ? null
+                                          : Colors.black.withOpacity(0.5),
+                                      imageUrl:
+                                          "https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png",
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
                       ],
                     );

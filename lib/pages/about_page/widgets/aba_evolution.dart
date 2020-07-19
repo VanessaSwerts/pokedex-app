@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pokedex_app/components/circular_progress_about.dart';
 import 'package:pokedex_app/models/pokeapi.dart';
-import 'package:pokedex_app/models/specie.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
-import 'package:pokedex_app/stores/pokeapiv2_store.dart';
 
 class AbaEvolution extends StatelessWidget {
-  final PokeApiV2Store _pokeV2Store = GetIt.instance<PokeApiV2Store>();
   final PokeApiStore _pokeStore = GetIt.instance<PokeApiStore>();
 
   Widget resizePoke(Widget pokeImg) {

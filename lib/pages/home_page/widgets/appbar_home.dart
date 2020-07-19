@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppBarHome extends StatelessWidget {
   @override
@@ -17,8 +18,11 @@ class AppBarHome extends StatelessWidget {
                     right: 5,
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: null,
+                    icon: Icon(
+                      Icons.close,
+                      color: Colors.black,
+                    ),
+                    onPressed: () => SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
                   ),
                 ),
               ],
@@ -33,7 +37,7 @@ class AppBarHome extends StatelessWidget {
                   "Pokedex",
                   style: TextStyle(
                     fontFamily: "Google",
-                    fontWeight: FontWeight.bold,                    
+                    fontWeight: FontWeight.bold,
                     fontSize: 32,
                   ),
                 ),

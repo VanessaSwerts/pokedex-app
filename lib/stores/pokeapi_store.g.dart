@@ -84,6 +84,21 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
     });
   }
 
+  final _$favPokeAtom = Atom(name: '_PokeApiStoreBase.favPoke');
+
+  @override
+  List<String> get favPoke {
+    _$favPokeAtom.reportRead();
+    return super.favPoke;
+  }
+
+  @override
+  set favPoke(List<String> value) {
+    _$favPokeAtom.reportWrite(value, super.favPoke, () {
+      super.favPoke = value;
+    });
+  }
+
   final _$_PokeApiStoreBaseActionController =
       ActionController(name: '_PokeApiStoreBase');
 
@@ -110,6 +125,17 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
   }
 
   @override
+  dynamic setFavPoke() {
+    final _$actionInfo = _$_PokeApiStoreBaseActionController.startAction(
+        name: '_PokeApiStoreBase.setFavPoke');
+    try {
+      return super.setFavPoke();
+    } finally {
+      _$_PokeApiStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   Widget getPokemonImage(String index) {
     final _$actionInfo = _$_PokeApiStoreBaseActionController.startAction(
         name: '_PokeApiStoreBase.getPokemonImage');
@@ -125,6 +151,7 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
     return '''
 pokeColor: ${pokeColor},
 currentPosition: ${currentPosition},
+favPoke: ${favPoke},
 pokeAPI: ${pokeAPI},
 pokeCurrent: ${pokeCurrent}
     ''';

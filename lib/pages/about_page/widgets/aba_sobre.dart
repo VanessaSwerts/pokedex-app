@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pokedex_app/components/circular_progress_about.dart';
+import 'package:pokedex_app/models/pokeapiv2.dart';
 import 'package:pokedex_app/models/specie.dart';
 import 'package:pokedex_app/stores/pokeapi_store.dart';
 import 'package:pokedex_app/stores/pokeapiv2_store.dart';
@@ -21,7 +22,7 @@ class AbaSobre extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Descrição:",
+              "Description:",
               style: TextStyle(
                 fontFamily: "Google",
                 fontSize: 16,
@@ -55,7 +56,7 @@ class AbaSobre extends StatelessWidget {
               height: 5.0,
             ),
             Text(
-              "Biologia:",
+              "Biology:",
               style: TextStyle(
                 fontFamily: "Google",
                 fontSize: 16,
@@ -74,7 +75,7 @@ class AbaSobre extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          "Altura: ",
+                          "Height: ",
                           style: TextStyle(
                             fontFamily: "Google",
                             fontSize: 14,
@@ -102,7 +103,7 @@ class AbaSobre extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "Peso: ",
+                            "Weight: ",
                             style: TextStyle(
                               fontFamily: "Google",
                               fontSize: 14,
@@ -130,21 +131,26 @@ class AbaSobre extends StatelessWidget {
             ),
             Observer(
               builder: (_) {
-                String firstAbility = _pokeV2Store.pokeApiV2.abilities
-                    .where((element) => element.ability != null)
-                    .first
-                    .ability
-                    .name;
-                String lastAbility = _pokeV2Store.pokeApiV2.abilities
-                    .where((element) => element.ability != null)
-                    .last
-                    .ability
-                    .name;
+                PokeApiV2 pokeV2 = _pokeV2Store.pokeApiV2;
+                String firstAbility;
+                String lastAbility;
+                if (pokeV2 != null) {
+                  firstAbility = pokeV2.abilities
+                      .where((element) => element.ability != null)
+                      .first
+                      .ability
+                      .name;
+                  lastAbility = pokeV2.abilities
+                      .where((element) => element.ability != null)
+                      .last
+                      .ability
+                      .name;
+                }
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Habilidade(s):",
+                      "Abilities:",
                       style: TextStyle(
                         fontFamily: "Google",
                         fontSize: 16,
@@ -154,31 +160,33 @@ class AbaSobre extends StatelessWidget {
                     SizedBox(
                       width: 15.0,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          firstAbility == lastAbility
-                              ? firstAbility
-                              : firstAbility + ", ",
-                          style: TextStyle(
-                            fontFamily: "Google",
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                          maxLines: 2,
-                        ),
-                        Text(
-                          firstAbility == lastAbility ? " " : lastAbility,
-                          style: TextStyle(
-                            fontFamily: "Google",
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                          maxLines: 2,
-                        ),
-                      ],
-                    ),
+                   ( firstAbility != null && pokeV2 != null )
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                firstAbility == lastAbility
+                                    ? firstAbility
+                                    : firstAbility + ", ",
+                                style: TextStyle(
+                                  fontFamily: "Google",
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 2,
+                              ),
+                              Text(
+                                firstAbility == lastAbility ? " " : lastAbility,
+                                style: TextStyle(
+                                  fontFamily: "Google",
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                maxLines: 2,
+                              ),
+                            ],
+                          )
+                        : CircularProgressAbout(),
                   ],
                 );
               },

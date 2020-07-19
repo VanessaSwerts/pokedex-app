@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
+import 'package:mobx/mobx.dart';
 import 'package:pokedex_app/pages/about_page/widgets/aba_evolution.dart';
 import 'package:pokedex_app/pages/about_page/widgets/aba_sobre.dart';
 import 'package:pokedex_app/pages/about_page/widgets/aba_status.dart';
@@ -17,6 +18,7 @@ class _AboutPageState extends State<AboutPage>
   TabController _tabController;
   PageController _pageController;
   PokeApiStore _pokeStore;
+  ReactionDisposer _disposer;
 
   @override
   void initState() {
@@ -24,6 +26,18 @@ class _AboutPageState extends State<AboutPage>
     _tabController = TabController(length: 3, vsync: this);
     _pageController = PageController(initialPage: 0);
     _pokeStore = GetIt.instance<PokeApiStore>();
+
+    _disposer = reaction(
+      (f) => _pokeStore.currentPosition,
+      (r) => _pageController.animateToPage(0,
+          duration: Duration(milliseconds: 300), curve: Curves.easeInOut),
+    );
+  }
+
+ @override
+  void dispose() {
+    _disposer();
+    super.dispose();
   }
 
   @override
@@ -62,10 +76,10 @@ class _AboutPageState extends State<AboutPage>
                     indicatorSize: MD2IndicatorSize.normal),
                 tabs: <Widget>[
                   Tab(
-                    text: "Sobre",
+                    text: "About",
                   ),
                   Tab(
-                    text: "Evolução",
+                    text: "Evolution",
                   ),
                   Tab(
                     text: "Status",

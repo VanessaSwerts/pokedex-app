@@ -13,14 +13,17 @@ A motivação para o desenvolvimento da Pokedex App foi aplicar os conceitos cit
 ## Screenshots 
 
 ### Tela Principal 
-![pokedex_telaPrincipal](https://user-images.githubusercontent.com/57146734/87861385-15c94280-c91c-11ea-91a8-d1ff0787d66c.jpg)
+![pokedex_telaPrincipal](https://user-images.githubusercontent.com/57146734/87866376-6c07a700-c957-11ea-9060-04463fbdc156.jpg)
 
 ### Tela de Detalhes
 
-#### Pokémon Charmander - Exibindo aba Sobre
-![pokedex_abaSobre](https://user-images.githubusercontent.com/57146734/87861331-9e93ae80-c91b-11ea-9665-97274b0a0e42.jpg)
+#### Aba Sobre
+![pokedex_teladetalhe_abaSobre](https://user-images.githubusercontent.com/57146734/87866380-7164f180-c957-11ea-85c8-ab1de5299ea9.jpg)
 
-#### Pokémon Pikachu - Exibindo aba evolução
-![pokedex_abaEvolução](https://user-images.githubusercontent.com/57146734/87861356-d0a51080-c91b-11ea-8efa-553323116e2c.jpg)
+#### Aba evolução
+![pokedex_teladetalhe_abaEvolucao](https://user-images.githubusercontent.com/57146734/87866381-71fd8800-c957-11ea-8a90-2a4bf669b1cd.jpg)
+
+#### Aba Status
+![pokedex_teladetalhe_abaStatus](https://user-images.githubusercontent.com/57146734/87866383-72961e80-c957-11ea-86f8-26d91baef5c1.jpg)
 
 

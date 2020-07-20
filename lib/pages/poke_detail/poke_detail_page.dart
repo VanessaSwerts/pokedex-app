@@ -117,7 +117,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                                           color: !_pokeStore.favPoke.contains(
                                                   _pokeStore.pokeCurrent.num)
                                               ? Colors.white
-                                              : Colors.redAccent,
+                                              : Colors.red[300],                                          
                                         ),
                                   onPressed: _pokeStore.setFavPoke,
                                 );

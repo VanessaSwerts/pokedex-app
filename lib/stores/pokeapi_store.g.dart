@@ -87,13 +87,13 @@ mixin _$PokeApiStore on _PokeApiStoreBase, Store {
   final _$favPokeAtom = Atom(name: '_PokeApiStoreBase.favPoke');
 
   @override
-  List<String> get favPoke {
+  ObservableList<String> get favPoke {
     _$favPokeAtom.reportRead();
     return super.favPoke;
   }
 
   @override
-  set favPoke(List<String> value) {
+  set favPoke(ObservableList<String> value) {
     _$favPokeAtom.reportWrite(value, super.favPoke, () {
       super.favPoke = value;
     });

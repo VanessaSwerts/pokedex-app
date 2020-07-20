@@ -25,7 +25,7 @@ abstract class _PokeApiStoreBase with Store {
   int currentPosition;
 
   @observable
-  List<String> favPoke = List();
+  ObservableList<String> favPoke = ObservableList<String>();
 
   @computed
   PokeAPI get pokeAPI => _pokeAPI;

@@ -67,12 +67,12 @@ class AbaSobre extends StatelessWidget {
               height: 5.0,
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 180.0, left: 10.0),
+              padding: const EdgeInsets.only(left: 10.0),
               child: Column(
                 children: <Widget>[
                   Observer(builder: (_) {
                     return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      
                       children: <Widget>[
                         Text(
                           "Height: ",
@@ -82,6 +82,9 @@ class AbaSobre extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.black54,
                           ),
+                        ),
+                        SizedBox(
+                          width: 10.0,
                         ),
                         Text(
                           _pokeStore.pokeCurrent.height,
@@ -100,7 +103,7 @@ class AbaSobre extends StatelessWidget {
                   Observer(
                     builder: (_) {
                       return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       
                         children: <Widget>[
                           Text(
                             "Weight: ",
@@ -110,6 +113,9 @@ class AbaSobre extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Colors.black54,
                             ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
                           ),
                           Text(
                             _pokeStore.pokeCurrent.weight,
@@ -160,7 +166,7 @@ class AbaSobre extends StatelessWidget {
                     SizedBox(
                       width: 15.0,
                     ),
-                   ( firstAbility != null && pokeV2 != null )
+                    (firstAbility != null && pokeV2 != null)
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
